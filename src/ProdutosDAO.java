@@ -37,33 +37,28 @@ public class ProdutosDAO {
     }
 }
 
-    public ArrayList<ProdutosDTO> listarProdutos() {
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+    String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+    ArrayList<ProdutosDTO> lista = new ArrayList<>();
 
-        ArrayList<ProdutosDTO> lista = new ArrayList<>();
+    try (Connection conn = new conectaDAO().connectDB();
+         PreparedStatement prep = conn.prepareStatement(sql);
+         ResultSet rs = prep.executeQuery()) {
 
-        String sql = "SELECT * FROM produtos";
-
-        try {
-            conn = new conectaDAO().connectDB();
-            prep = conn.prepareStatement(sql);
-            resultset = prep.executeQuery();
-
-            while (resultset.next()) {
-                ProdutosDTO p = new ProdutosDTO();
-
-                p.setId(resultset.getInt("id"));
-                p.setNome(resultset.getString("nome"));
-                p.setValor(resultset.getInt("valor"));
-                p.setStatus(resultset.getString("status"));
-
-                lista.add(p);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar: " + e.getMessage());
+        while (rs.next()) {
+            ProdutosDTO p = new ProdutosDTO();
+            p.setId(rs.getInt("id"));
+            p.setNome(rs.getString("nome"));
+            p.setValor(rs.getInt("valor"));
+            p.setStatus(rs.getString("status"));
+            lista.add(p);
         }
 
-        return lista;
+    } catch (Exception e) {
+        System.out.println("Erro ao listar vendidos: " + e.getMessage());
     }
 
+    return lista;
+}
+    
 }
