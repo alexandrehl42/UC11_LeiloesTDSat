@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Alexandre
- */
 public class vendasVIEW extends javax.swing.JFrame {
 
     public vendasVIEW() {
@@ -20,7 +15,7 @@ public class vendasVIEW extends javax.swing.JFrame {
             ArrayList<ProdutosDTO> lista = dao.listarProdutosVendidos();
 
             DefaultTableModel model = (DefaultTableModel) tabelaVendas.getModel();
-            model.setNumRows(0);
+            model.setRowCount(0);
 
             for (ProdutosDTO p : lista) {
                 model.addRow(new Object[]{
@@ -33,6 +28,7 @@ public class vendasVIEW extends javax.swing.JFrame {
 
         } catch (Exception e) {
             System.out.println("Erro na listagem de vendas: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao listar vendas: " + e.getMessage());
         }
     }
 
@@ -58,7 +54,7 @@ public class vendasVIEW extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nome", "Valor", "Status"
             }
         ));
         jScrollPane1.setViewportView(tabelaVendas);

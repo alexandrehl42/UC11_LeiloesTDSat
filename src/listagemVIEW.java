@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -136,21 +137,30 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-    int linha = tabelaProdutos.getSelectedRow();
+    String idText = id_produto_venda.getText().trim();
 
-    if (linha == -1) {
-        JOptionPane.showMessageDialog(null, "Selecione um produto!");
+    if (idText.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Por favor, digite o ID do produto para venda.");
         return;
     }
 
-    int id = Integer.parseInt(tabelaProdutos.getValueAt(linha, 0).toString());
+    try {
+        int id = Integer.parseInt(idText);
 
-    ProdutosDAO dao = new ProdutosDAO();
-    dao.venderProduto(id);
+        ProdutosDAO dao = new ProdutosDAO();
+        dao.venderProduto(id);
 
-    JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+        JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
 
-    listarProdutos();
+        id_produto_venda.setText("");
+
+        listarProdutos();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "ID inválido. Por favor, digite apenas números.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao tentar vender o produto: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
